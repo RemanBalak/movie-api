@@ -6,7 +6,10 @@ const parsedURL = url.parse(myURL);
 console.log(parsedURL);
 
 //HTTP import
+const url = require('url');
+const fs = require('fs');
 const http = require('http');
+const PORT = process.env.PORT || 8080;
 
 http
   .createServer((request, response) => {
