@@ -1,10 +1,3 @@
-// URL import
-const url = require('url');
-const myURL = '#';
-const parsedURL = url.parse(myURL);
-
-console.log(parsedURL);
-
 //HTTP import
 const url = require('url');
 const fs = require('fs');
