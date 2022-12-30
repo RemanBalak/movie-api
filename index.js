@@ -1,60 +1,44 @@
 const express = require('express');
 const app = express();
 
-let topBooks = [
+const movies = [
   {
-    title: "Harry Potter and the Sorcerer's Stone",
-    author: 'J.K. Rowling',
+    id: 1,
+    title: 'The Shawshank Redemption',
+    year: 1994,
+    rating: 9.2,
   },
   {
-    title: 'Lord of the Rings',
-    author: 'J.R.R. Tolkien',
+    id: 2,
+    title: 'The Godfather',
+    year: 1972,
+    rating: 9.2,
   },
   {
-    title: 'Twilight',
-    author: 'Stephanie Meyer',
+    id: 3,
+    title: 'The Godfather: Part II',
+    year: 1974,
+    rating: 9.0,
   },
   {
-    title: 'Police Story',
-    author: 'Jackie Chan',
-  },
-  {
-    title: 'The Machinist',
-    author: 'Scott Kosar',
-  },
-  {
-    title: 'Good Will Hunting',
-    author: 'Gus Van Sant',
-  },
-  {
-    title: 'Triangle',
-    author: 'Christopher Smith',
-  },
-  {
-    title: 'Fractured',
-    author: 'Karin Slaughter',
-  },
-  {
-    title: 'Fight Club',
-    author: 'Chuck Palahniuk',
-  },
-  {
-    title: 'Spirited Away',
-    author: 'Hayao Miyazaki',
+    id: 4,
+    title: 'The Dark Knight',
+    year: 2008,
+    rating: 9.0,
   },
 ];
 
 // GET requests
 app.get('/', (req, res) => {
-  res.send('Welcome to my book club!');
+  res.send('Welcome to my movie club!');
 });
 
 app.get('/documentation', (req, res) => {
   res.sendFile('public/documentation.html', { root: __dirname });
 });
 
-app.get('/books', (req, res) => {
-  res.json(topBooks);
+app.get('/movies', (req, res) => {
+  res.json(movies);
 });
 
 // listen for requests
