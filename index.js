@@ -17,6 +17,9 @@ const uuid = require('uuid');
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {
   flags: 'a',
 });
+let auth = require('./auth')(app);
+const passport = require('passport');
+require('./passport');
 
 app.use(morgan('combined', { stream: accessLogStream }));
 
@@ -110,6 +113,7 @@ let movies = [
 app.use(express.static('public'));
 app.use(morgan('common'));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
   res.send(
