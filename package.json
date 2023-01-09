@@ -1,28 +1,41 @@
 {
-  "name": "movie_api",
+  "name": "movie-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "Server-side component of a “movies” web application",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "start": "node server.js"
+    "dev": "nodenv index.js --env '.env.development.local' --verbose --exec nodemon"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RemanBalak/movie-api.git"
+    "url": "git+https://github.com/kal40/movie-api.git"
   },
-  "keywords": [],
-  "author": "",
+  "author": "Karoly Lonich",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/RemanBalak/movie-api/issues"
+    "url": "https://github.com/kal40/movie-api/issues"
   },
-  "homepage": "https://github.com/RemanBalak/movie-api#readme",
+  "homepage": "https://github.com/kal40/movie-api#readme",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
+    "express-validator": "^6.14.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.8.0",
     "morgan": "^1.10.0",
-    "uuid": "^8.3.2"
+    "passport": "^0.6.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.29.0",
+    "node-env-run": "^4.0.2",
+    "nodemon": "^2.0.20",
+    "prettier": "2.8.1"
   }
 }
