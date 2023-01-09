@@ -4,7 +4,7 @@ const Models = require('./models.js');
 //   useNewUrlParser: true,
 //   useUnifiedTopology: true,
 // });
-mongoose.connect('process.env.CONNECTION_URI', {
+mongoose.connect('mongodb+srv://Reman01:Examplepw@myflixdb.zzxadxd.mongodb.net/myFLixDB?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
