@@ -19,14 +19,15 @@ Setup a mongodb database.
 <h3> Installation </h3>
 Clone the repository:
 
-git clone <a target="_blank">https://github.com/RemanBalak/movie-api.git </a> <br/>
+git clone <a href="https://github.com/RemanBalak/movie-api.git"target="_blank">https://github.com/RemanBalak/movie-api.git </a> <br/>
 <strong> cd </strong> movie_api <br/>
+<br/>
 Create a file and name it .env.development.local for environment variables and add the next content:
 
-CONNECTION_URI="your mongo DB connection string"
-PORT=your port number
-HOST="your host name with the used http protocol together"
-then run the next commands:
+CONNECTION_URI="your mongo DB connection string" <br/>
+PORT=your port number <br/>
+HOST="your host name with the used http protocol together"<br/>
+then run the next commands:<br/>
 
 npm install <br/>
 npm run dev
