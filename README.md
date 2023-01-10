@@ -19,7 +19,7 @@ Setup a mongodb database.
 <h3> Installation </h3>
 Clone the repository:
 
-git clone <a href="https://github.com/RemanBalak/movie-api.git"target="_blank">https://github.com/RemanBalak/movie-api.git </a> <br/>
+git clone https://github.com/RemanBalak/movie-api.git <br/>
 <strong> cd </strong> movie_api <br/>
 <br/>
 Create a file and name it .env.development.local for environment variables and add the next content:
