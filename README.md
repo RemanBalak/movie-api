@@ -16,11 +16,11 @@ Install nodejs LTS or the latest version.
 
 Setup a mongodb database.
 
-Installation
+<h3> Installation </h3>
 Clone the repository:
 
-git clone https://github.com/kal40/movie-api.git
-cd movie-api
+git clone https://github.com/RemanBalak/movie-api.git <br/>
+<strong> cd </strong> movie-api
 Create a file and name it .env.development.local for environment variables and add the next content:
 
 CONNECTION_URI="your mongo DB connection string"
@@ -30,14 +30,13 @@ then run the next commands:
 
 npm install
 npm run dev
-Testing
-The endpoints can be tested directly from the documentation or the openapi definitions can be imported to Postman from this link
+
 
 <h3> Key Features </h3>
-- Express library for endpoint routing
-- Uses MongoDB noSQL database deployed on MongoDB Atlas
-- Basic HTTP auth for first login then JWT (token-based) authentication for further API calls.
-- User's password hashing
+- Express library for endpoint routing<br />
+- Uses MongoDB noSQL database deployed on MongoDB Atlas<br />
+- Basic HTTP auth for first login then JWT (token-based) authentication for further API calls.<br />
+- User's password hashing<br />
 <h3> Dependencies </h3>
-See <a href="package.json"> package.json </a>
+See <a href="package.json" target="_blank"> package.json </a>
 </p>
