@@ -1,14 +1,5 @@
 const mongoose = require('mongoose');
 const Models = require('./models.js');
-// mongoose.connect('mongodb://localhost:27017/myFlixDB', {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
-mongoose.connect(process.env.CONNECTION_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
 const Movies = Models.Movie;
 const Users = Models.User;
 const express = require('express');
@@ -23,22 +14,33 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {
   flags: 'a',
 });
 const cors = require('cors');
+
+// mongoose.connect('mongodb://localhost:27017/myFlixDB', {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
+mongoose.connect(process.env.CONNECTION_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
 app.use(cors());
 let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
 
+
 app.use(morgan('combined', { stream: accessLogStream }));
 
 let users = [
   {
-    id: '1',
+    id: '63ca3c65563d00584379520b',
     name: 'Kim',
     favoriteMovies: [],
   },
 
   {
-    id: '2',
+    id: '63ca3c6e82479ffeaf7609be',
     name: 'deven',
     password: '1234',
     email: 'deven27@gmail.com',
@@ -49,6 +51,7 @@ let users = [
 
 let movies = [
   {
+    id: '63c819403aee38373fc7e579',
     Title: 'mean girls',
     Description: ' a drama about a girl making friends with mean girls',
     Genre: {
@@ -67,6 +70,7 @@ let movies = [
   },
 
   {
+    id: '63c81956fb636a8be1058ee7',
     Title: 'the simpsons movie',
     Description: 'A movie about the simpsons but longer',
     Genre: {
@@ -83,6 +87,7 @@ let movies = [
   },
 
   {
+    id: '63c8195f1b0b1b0b1b0b1b0b',
     Title: 'kill bill',
     Description: 'A movie about a person who wants to get revenge.',
     Genre: {
@@ -100,6 +105,7 @@ let movies = [
   },
 
   {
+    id: '63c8196f3ee22010fe71e256',
     Title: 'nightmare on elm street',
     Description: 'a guy who kills you in his dreams',
     Genre: {
@@ -131,13 +137,16 @@ app.get('/', (req, res) => {
 //CREATE
 app.post('/users', (req, res) => {
   const newUser = req.body;
+  if (!newUser) {
+    return res.status(400).send('User not provided');
+  }
 
   if (newUser.name) {
     newUser.id = uuid.v4();
     users.push(newUser);
-    res.status(201).json(newUser);
+    return res.status(201).json(newUser);
   } else {
-    res.status(400).send('name is required');
+    return res.status(400).send('name is required');
   }
 });
 
@@ -146,7 +155,45 @@ app.put('/users/:id', (req, res) => {
   const { id } = req.params;
   const updatedUser = req.body;
 
+  if (!id) {
+    return res.status(400).send('id is required');
+  }
+
+  if(!updatedUser) {
+    return res.status(400).send('User not provided');
+  }
+
   let user = users.find((user) => user.id == id);
+
+  if (!user) {
+    return res.status(404).send('User not found');
+  }
+
+  if (user) {
+    user.name = updatedUser.name;
+    res.status(201).json(user);
+  } else {
+    res.status(400).send('user does not exist');
+  }
+});
+
+app.put('/users/:id', (req, res) => {
+  const { id } = req.params;
+  const updatedUser = req.body;
+
+  if (!id) {
+    return res.status(400).send('id is required');
+  }
+
+  if(!updatedUser) {
+    return res.status(400).send('User not provided');
+  }
+
+  let user = users.find((user) => user.id == id);
+
+  if (!user) {
+    return res.status(404).send('User not found');
+  }
 
   if (user) {
     user.name = updatedUser.name;
@@ -157,45 +204,71 @@ app.put('/users/:id', (req, res) => {
 });
 
 //POST
-app.post('/users/:id/:movieTitle', (req, res) => {
-  const { id, movieTitle } = req.params;
+app.post('/users/:id/:movieId', (req, res) => {
+  const { id, movieId } = req.params;
 
-  let user = users.find((user) => user.id == id);
+  if (!id) {
+    return res.status(400).send('user id is required');
+  }
+
+  if (!movieId) {
+    return res.status(400).send('movie id is required');
+  }
+  let user = users.find((user) => user.id === id);
+
+  if (!user) {
+    return res.status(404).send('user not found');
+  }
 
   if (user) {
-    user.favoriteMovies.push(movieTitle);
-    res.status(201).send(`${movieTitle} has been added to user ${id}'s array`);
+    user.favoriteMovies.push(movieId);
+    res.status(201).send(`${movieId} has been added to user ${id}'s array`);
   } else {
     res.status(400).send('user does not exist');
   }
 });
 
 //DELETE
-app.delete('/users/:id/:movieTitle', (req, res) => {
-  const { id, movieTitle } = req.params;
+app.delete('/users/:id/:movieId', (req, res) => {
+  const { id, movieId } = req.params;
 
-  let user = users.find((user) => user.id == id);
+  if (!id) {
+    return res.status(400).send('user id is required');
+  }
+  if (!movieId) {
+    return res.status(400).send('movie id is required');
+  }
+
+  let user = users.find((user) => user.id === id);
+
+  if (!user) {
+    return res.status(404).send('user not found');
+  }
 
   if (user) {
     user.favoriteMovies = user.favoriteMovies.filter(
-      (title) => title !== movieTitle
+      (title) => title !== movieId
     );
     res
       .status(201)
-      .send(`${movieTitle} has been removed from user ${id}'s array`);
+      .send(`${movieId} has been removed from user ${id}'s array`);
   } else {
     res.status(400).send('user does not exist');
   }
 });
 
-//DELETE
+
 app.delete('/users/:id', (req, res) => {
   const { id } = req.params;
 
-  let user = users.find((user) => user.id == id);
+  if (!id) {
+    return res.status(400).send('id is required');
+  }
+
+  let user = users.find((user) => user.id === id);
 
   if (user) {
-    users = users.filter((user) => user.id != id);
+    users = users.filter((user) => user.id !== id);
     res.status(201).send(` user ${id} has been deleted `);
   } else {
     res.status(400).send('user does not exist');
