@@ -135,18 +135,22 @@ app.get('/', (req, res) => {
 });
 
 //CREATE
-app.post('/users', (req, res) => {
+app.post('/users', async (req, res) => {
   const newUser = req.body;
   if (!newUser) {
     return res.status(400).send('User not provided');
   }
 
-  if (newUser.name) {
-    newUser.id = uuid.v4();
-    users.push(newUser);
-    return res.status(201).json(newUser);
+  if (newUser.name && newUser.password && newUser.email) {
+    const user = await User.create({
+      Username: newUser.name,
+      Password: newUser.password,
+      Email: newUser.email,
+      Birthday: newUser.birthday,
+    })
+    return res.status(201).json(user._id);
   } else {
-    return res.status(400).send('name is required');
+    return res.status(400).send('name, email, password are required');
   }
 });
 
