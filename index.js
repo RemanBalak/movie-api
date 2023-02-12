@@ -5,30 +5,29 @@ const Users = Models.User;
 const express = require('express');
 const morgan = require('morgan');
 const app = express();
-const fs = require('fs');
-const path = require('path');
-const bodyParser = require('body-parser');
-const uuid = require('uuid');
-const { check, validationResult } = require('express-validator');
-const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {
-  flags: 'a',
-});
 const cors = require('cors');
+let allowedOrigins = ['https://myflixtv.netlify.app'];
 
-// mongoose.connect('mongodb://localhost:27017/myFlixDB', {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
-mongoose.connect(process.env.CONNECTION_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        // If a specific origin isn’t found on the list of allowed origins
+        let message =
+          'The CORS policy for this application doesn’t allow access from origin ' +
+          origin;
+        return callback(new Error(message), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
 
 app.use(cors());
 let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
-
 
 app.use(morgan('combined', { stream: accessLogStream }));
 
@@ -147,7 +146,7 @@ app.post('/users', async (req, res) => {
       Password: newUser.password,
       Email: newUser.email,
       Birthday: newUser.birthday,
-    })
+    });
     return res.status(201).json(user._id);
   } else {
     return res.status(400).send('name, email, password are required');
@@ -163,7 +162,7 @@ app.put('/users/:id', (req, res) => {
     return res.status(400).send('id is required');
   }
 
-  if(!updatedUser) {
+  if (!updatedUser) {
     return res.status(400).send('User not provided');
   }
 
@@ -189,7 +188,7 @@ app.put('/users/:id', (req, res) => {
     return res.status(400).send('id is required');
   }
 
-  if(!updatedUser) {
+  if (!updatedUser) {
     return res.status(400).send('User not provided');
   }
 
@@ -253,14 +252,11 @@ app.delete('/users/:id/:movieId', (req, res) => {
     user.favoriteMovies = user.favoriteMovies.filter(
       (title) => title !== movieId
     );
-    res
-      .status(201)
-      .send(`${movieId} has been removed from user ${id}'s array`);
+    res.status(201).send(`${movieId} has been removed from user ${id}'s array`);
   } else {
     res.status(400).send('user does not exist');
   }
 });
-
 
 app.delete('/users/:id', (req, res) => {
   const { id } = req.params;
